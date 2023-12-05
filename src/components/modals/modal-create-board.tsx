@@ -7,12 +7,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
+import axios from "axios";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { URLs } from "@/lib/network";
+import { useState } from "react";
 
 export function CreateBoard() {
+  const [boardName, setBoardName] = useState<string>();
+  const [open, setOpen] = useState<boolean>(false);
+  const mutation = useMutation({
+    mutationFn: (newBoard: { name: string }) => {
+      return axios.post(URLs.createBoard, newBoard);
+    },
+    onSuccess: () => {
+      setOpen(false);
+    },
+  });
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost">Create Snippet Board</Button>
       </DialogTrigger>
@@ -27,14 +43,27 @@ export function CreateBoard() {
             Board Name
           </Label>
           <Input
+            value={boardName}
+            onChange={(e) => {
+              setBoardName(e.target.value);
+            }}
             id="name"
             placeholder="'Custom React Hooks' or 'js utils'"
             className="col-span-3"
           />
         </div>
-
         <DialogFooter>
-          <Button type="submit">Create</Button>
+          <Button
+            disabled={mutation.isLoading || !boardName}
+            onClick={() => {
+              if (boardName) {
+                mutation.mutate({ name: boardName });
+              }
+            }}
+            type="submit"
+          >
+            Create
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

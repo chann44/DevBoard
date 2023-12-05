@@ -45,6 +45,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  boards        Board[]
+  snippet       Snippet[]
 }
 
 model VerificationToken {
@@ -53,4 +55,30 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Board {
+  id        String    @id @default(uuid())
+  name      String
+  snippet   Snippet[]
+  creatorId String?
+  creator   User?     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+}
+
+enum Lanaguage {
+  TYPESCRIPT
+}
+
+model Snippet {
+  id          String    @id @default(uuid())
+  title       String
+  lanaguage   Lanaguage
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  board     Board?   @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId   String?
+  creatorId String?
+  creator   User?    @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 }
