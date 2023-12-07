@@ -65,15 +65,12 @@ model Board {
   creator   User?     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 }
 
-enum Lanaguage {
-  TYPESCRIPT
-}
-
 model Snippet {
-  id          String    @id @default(uuid())
+  id          String @id @default(uuid())
   title       String
-  lanaguage   Lanaguage
+  lanaguage   String
   description String
+  code        String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

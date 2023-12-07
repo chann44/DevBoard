@@ -6,6 +6,7 @@ import { CreateBoard } from "./modals/modal-create-board";
 import { UserNav } from "./user-nav";
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
+import { ModalCreateSnippet } from "./modals/modal-create-snippet";
 
 export function SiteHeader() {
   const { data } = useSession();
@@ -24,6 +25,7 @@ export function SiteHeader() {
       {data?.user.email ? (
         <div className="flex items-center gap-10">
           <CreateBoard />
+          <ModalCreateSnippet />
           <UserNav />
         </div>
       ) : (
