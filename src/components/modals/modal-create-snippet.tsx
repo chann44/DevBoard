@@ -61,7 +61,7 @@ type SnippetFormValues = z.infer<typeof snippetFormSchema>;
 const defaultValues: Partial<SnippetFormValues> = {
   title: "",
   description: "",
-  language: "",
+  language: "TS",
   code: "",
 };
 
@@ -77,12 +77,14 @@ export function ModalCreateSnippet() {
       return axios.post(URLs.createSnippet, newSnippet);
     },
     onSuccess: () => {
-      // setOpen(false);
+      form.reset();
+      setOpen(false);
     },
   });
 
+  // interduce some error logiing
+
   async function onSubmit(data: SnippetFormValues) {
-    console.log("hi");
     try {
       await mutation.mutate(data);
     } catch (e) {
@@ -164,16 +166,17 @@ export function ModalCreateSnippet() {
                 </FormItem>
               )}
             />
-            <Button
-              onClick={() => {
-                onSubmit(form.getValues());
-              }}
-              type="submit"
-            >
-              Create Snippet
-            </Button>
           </form>
         </Form>
+        <Button
+          disabled={mutation.isLoading}
+          onClick={() => {
+            onSubmit(form.getValues());
+          }}
+          type="submit"
+        >
+          Create Snippet
+        </Button>
       </DialogContent>
     </Dialog>
   );

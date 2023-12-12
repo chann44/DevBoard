@@ -1,21 +1,38 @@
 "use client";
-
+import { Snippet } from "prisma/prisma-client";
 import { URLs } from "@/lib/network";
 import axios from "axios";
-import { stringify } from "querystring";
 import { useQuery } from "react-query";
+import { SnippetCard } from "@/components/snippetCard";
 
 export default function Home() {
-  // const getBoards = async () => {
-  //   const response = await axios.get(URLs.getBoards);
-  //   return response.data;
-  // };
+  const getFeed = async () => {
+    const response = await axios.get(URLs.getFeed);
+    return response.data;
+  };
 
-  // const { data } = useQuery("boards", getBoards);
+  const { data } = useQuery<Snippet[]>("feed", getFeed);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {/* {JSON.stringify(data)} */}
+    <main className="px-6 my-6">
+      <div className="columns-4 gap-5">
+        {data?.map((item, index) => {
+          return (
+            <>
+              <SnippetCard key={index} snippet={item} />
+              <SnippetCard key={index} snippet={item} />
+              <SnippetCard key={index} snippet={item} />
+              <SnippetCard key={index} snippet={item} />
+              <SnippetCard key={index} snippet={item} />{" "}
+              <SnippetCard key={index} snippet={item} />{" "}
+              <SnippetCard key={index} snippet={item} />{" "}
+              <SnippetCard key={index} snippet={item} />{" "}
+              <SnippetCard key={index} snippet={item} />{" "}
+              <SnippetCard key={index} snippet={item} />
+            </>
+          );
+        })}
+      </div>
     </main>
   );
 }

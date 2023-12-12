@@ -8,8 +8,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { description, lanaguage, title, boardId, code } =
-      SnippetValidator.parse(body);
+    const { description, language, title, code } = SnippetValidator.parse(body);
 
     const session = await getAuthSession();
 
@@ -21,13 +20,8 @@ export async function POST(req: Request) {
       data: {
         title,
         description,
-        lanaguage: "TYPESCRIPT",
+        lanaguage: language,
         code,
-        board: {
-          connect: {
-            id: boardId,
-          },
-        },
         creator: {
           connect: {
             id: session.user.id,
@@ -41,7 +35,6 @@ export async function POST(req: Request) {
       status: 200,
     });
   } catch (error) {
-    console.log(error);
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 400 });
     }
