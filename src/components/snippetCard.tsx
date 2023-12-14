@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { Snippet } from "prisma/prisma-client";
+import Link from "next/link";
 
 interface SnippetCardProps {
   snippet: Snippet;
@@ -34,7 +35,9 @@ export function SnippetCard(props: SnippetCardProps) {
     <Card className="break-inside-avoid my-5">
       <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
         <div className="space-y-1">
-          <CardTitle>{props.snippet.title}</CardTitle>
+          <Link href={`/snippet/${props.snippet.id}`}>
+            <CardTitle>{props.snippet.title}</CardTitle>
+          </Link>
           <CardDescription>{props.snippet.description}</CardDescription>
         </div>
         <div className="flex items-center space-x-1 rounded-md bg-secondary text-secondary-foreground">
